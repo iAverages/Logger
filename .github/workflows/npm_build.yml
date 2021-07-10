@@ -40,8 +40,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./package.tgz
-          asset_name: package.tgz
+          asset_path: ./release.tgz
+          asset_name: release.tgz
           asset_content_type: application/tgz
 
       - name: Public on NPM
