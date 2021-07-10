@@ -1,5 +1,5 @@
 {
-    "name": "logger",
+    "name": "@iaverage/logger",
     "version": "1.0.0",
     "description": "Simple logger I use in all my projects",
     "main": "index.js",
