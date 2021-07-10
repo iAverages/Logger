@@ -1,2 +1,3 @@
 # Logger
- Simple logger used in all my projects
+
+Simple logger used in all my projects
