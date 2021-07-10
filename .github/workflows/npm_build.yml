@@ -45,6 +45,7 @@ jobs:
           asset_content_type: application/tgz
 
       - name: Public on NPM
+        if: steps.update_tag.outputs.tagname
         run: yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
