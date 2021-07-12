@@ -82,7 +82,8 @@ const logger = async (level: LogLevel, message: string | Error) => {
  * @param {String} message
  */
 export const uwu = (message: string) => {
-    if (process.env.NODE_ENV === "development") logger(LogLevel.DEBUG, message);
+    if (process.env.NODE_ENV === "development" || process.env.LOG_DEBUG?.toLowerCase() === "true")
+        logger(LogLevel.DEBUG, message);
 };
 
 /**

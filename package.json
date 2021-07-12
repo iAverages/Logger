@@ -1,6 +1,6 @@
 {
     "name": "@iaverage/logger",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Simple logger I use in all my projects",
     "main": "dist/logger.js",
     "author": "dan.#0402",
