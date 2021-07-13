@@ -1,9 +1,9 @@
 import * as fs from "fs";
 import colors from "colors";
 import axios from "axios";
-import stream from "stream";
+import { Writable } from "stream";
 
-const streamMap = new Map<string[], stream.Writable>();
+const streamMap = new Map<string[], Writable>();
 
 enum LogLevel {
     ERROR,
@@ -68,7 +68,7 @@ const logger = async (level: LogLevel, message: string | Error) => {
     } else if (logInfo.logPath) {
         try {
             await fs.promises.access(logInfo.logPath[0]);
-        } catch (error) {
+        } catch (_) {
             fs.mkdirSync(logInfo.logPath[0], { recursive: true });
         }
         const fsStream = fs.createWriteStream(logInfo.logPath.join(""), { flags: "a" });
@@ -119,7 +119,7 @@ export const error = (message: string | Error, ping = false) => {
     if (ping && process.env.DISCORD_ERROR_WEBHOOK) {
         try {
             axios.post(process.env.DISCORD_ERROR_WEBHOOK, {
-                content: `${process.env.DISCORD_PING_ID && `<@${process.env.DISCORD_PING_ID}>`} ${message}`,
+                content: (process.env.DISCORD_PING_ID && `<@${process.env.DISCORD_PING_ID}>`) + `${message}`,
             });
         } catch (err) {
             logger(LogLevel.ERROR, `Error while sending message to webhook: ${err.message}`);

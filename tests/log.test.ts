@@ -3,8 +3,8 @@ import colors from "colors";
 const text = "Hello";
 
 // Remove the [date time] from the logs
-const fixText = (text: string): string => {
-    return text.split(" ").splice(2).join(" ");
+const fixText = (t: string): string => {
+    return t.split(" ").splice(2).join(" ");
 };
 
 describe("Logger", () => {
