@@ -127,10 +127,8 @@ export const error = (message: string | Error, ping = false) => {
     }
 };
 
-["SIGTERM", "SIGINT"].forEach((event) => {
-    process.on(event, () => {
-        streamMap.forEach((stream) => stream.end);
-    });
+process.on("exit", () => {
+    streamMap.forEach((stream) => stream.end);
 });
 
 export default {
