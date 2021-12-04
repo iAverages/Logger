@@ -3,7 +3,7 @@ import colors from "colors";
 import axios from "axios";
 import { Writable } from "stream";
 
-const streamMap = new Map<string[], Writable>();
+const streamMap = new Map<string, Writable>();
 
 enum LogLevel {
     ERROR,
@@ -60,8 +60,8 @@ const logger = async (level: LogLevel, message: string | Error) => {
     } else {
         console.log(logMessageColor);
     }
-    if (logInfo.logPath != null && streamMap.has(logInfo.logPath)) {
-        const fsStream = streamMap.get(logInfo.logPath);
+    if (logInfo.logPath != null && streamMap.has(logInfo.logPath.join(""))) {
+        const fsStream = streamMap.get(logInfo.logPath.join(""));
         // There is a check right above it no?
         // @ts-ignore
         fsStream.write(logMessage + "\n");
@@ -72,7 +72,7 @@ const logger = async (level: LogLevel, message: string | Error) => {
             fs.mkdirSync(logInfo.logPath[0], { recursive: true });
         }
         const fsStream = fs.createWriteStream(logInfo.logPath.join(""), { flags: "a" });
-        streamMap.set(logInfo.logPath, fsStream);
+        streamMap.set(logInfo.logPath.join(""), fsStream);
         fsStream.write(logMessage + "\n");
     }
 };
