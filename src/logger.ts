@@ -117,13 +117,13 @@ export const warn = (message: string) => {
 export const error = (message: string | Error, ping = false) => {
     logger(LogLevel.ERROR, message);
     if (ping && process.env.DISCORD_ERROR_WEBHOOK) {
-        try {
-            axios.post(process.env.DISCORD_ERROR_WEBHOOK, {
+        axios
+            .post(process.env.DISCORD_ERROR_WEBHOOK, {
                 content: (process.env.DISCORD_PING_ID && `<@${process.env.DISCORD_PING_ID}>`) + `${message}`,
+            })
+            .catch((err) => {
+                logger(LogLevel.ERROR, `Error while sending message to webhook: ${err.message}`);
             });
-        } catch (err) {
-            logger(LogLevel.ERROR, `Error while sending message to webhook: ${err.message}`);
-        }
     }
 };
 
