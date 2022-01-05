@@ -24,15 +24,8 @@ export const setLokiSettings = (settings: LokiSettings) => {
 };
 
 const initLoki = () => {
-    if (loki) {
-        console.warn("loki is already inited");
-        return true;
-    }
-    console.warn(lokiSettings);
-    if (!lokiSettings.url) {
-        console.warn("no loki url");
-        return false;
-    }
+    if (loki) return true;
+    if (!lokiSettings.url) return false;
     // remove url from other settings
     const { url: _, ...settings } = lokiSettings;
     loki = new Loki(lokiSettings.url, settings ?? {});
@@ -40,11 +33,7 @@ const initLoki = () => {
 };
 
 const logLoki = (msg: string) => {
-    if (!initLoki()) {
-        console.warn("loki is already inited 2");
-
-        return;
-    }
+    if (!initLoki()) return;
     // ? - check is done in initLoki
     loki?.addLog(msg);
 };
