@@ -1,6 +1,6 @@
 {
     "name": "@iaverage/logger",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "description": "Simple logger I use in all my projects",
     "main": "dist/logger.js",
     "author": "Daniel Raybone <me@danielraybone.com> (https://danielraybone.com/)",
@@ -18,7 +18,8 @@
     ],
     "dependencies": {
         "axios": "^0.21.1",
-        "colors": "^1.4.0"
+        "colors": "^1.4.0",
+        "lokipush": "^1.0.1"
     },
     "devDependencies": {
         "@types/jest": "^26.0.24",

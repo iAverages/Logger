@@ -2,6 +2,7 @@ import * as fs from "fs";
 import colors from "colors";
 import axios from "axios";
 import { Writable } from "stream";
+import Loki, { BatcherOptions } from "lokipush";
 
 const streamMap = new Map<string, Writable>();
 
@@ -12,6 +13,41 @@ enum LogLevel {
     WARN,
     DEBUG,
 }
+
+let loki: Loki | null = null;
+type LokiSettings = BatcherOptions & { url?: string };
+let lokiSettings: LokiSettings = {};
+
+export const setLokiSettings = (settings: LokiSettings) => {
+    settings.metadata = { ...settings.metadata, src: "@iaverage/loggger" };
+    lokiSettings = settings;
+};
+
+const initLoki = () => {
+    if (loki) {
+        console.warn("loki is already inited");
+        return true;
+    }
+    console.warn(lokiSettings);
+    if (!lokiSettings.url) {
+        console.warn("no loki url");
+        return false;
+    }
+    // remove url from other settings
+    const { url: _, ...settings } = lokiSettings;
+    loki = new Loki(lokiSettings.url, settings ?? {});
+    return true;
+};
+
+const logLoki = (msg: string) => {
+    if (!initLoki()) {
+        console.warn("loki is already inited 2");
+
+        return;
+    }
+    // ? - check is done in initLoki
+    loki?.addLog(msg);
+};
 
 const getDate = () => {
     const doubleDigit = (num: number) => (num < 10 ? `0${num}` : num);
@@ -50,7 +86,8 @@ const logger = async (level: LogLevel, message: string | Error) => {
     const logInfo = getLogLevelInfo(level);
     const dateFormat = `[${date}]`;
     // .replace fixes weird encoding issues I couldnt work out.
-    const logMessage = `${dateFormat} ${logInfo.prefix} ${message}`.replace("[0m", "");
+    const logMessageNoDate = `${logInfo.prefix} ${message}`.replace("[0m", "");
+    const logMessage = `${dateFormat} ${logMessageNoDate}`;
     // prettier-ignore
     const logMessageColor = `${colors.gray(dateFormat)} ${logInfo.color(logInfo.prefix)} ${message}`;
     if (level === LogLevel.ERROR) {
@@ -60,6 +97,7 @@ const logger = async (level: LogLevel, message: string | Error) => {
     } else {
         console.log(logMessageColor);
     }
+    logLoki(logMessageNoDate); // Push log message to Grafana Loki
     if (logInfo.logPath != null && streamMap.has(logInfo.logPath.join(""))) {
         const fsStream = streamMap.get(logInfo.logPath.join(""));
         // There is a check right above it no?
@@ -138,4 +176,5 @@ export default {
     warn,
     uwu,
     debug: uwu,
+    setLokiSettings,
 };
