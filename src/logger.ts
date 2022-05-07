@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import colors from "colors";
+import colors from "chalk";
 import axios from "axios";
 import { Writable } from "stream";
 import Loki, { BatcherOptions } from "lokipush";
@@ -155,7 +155,8 @@ export const error = (message: string | Error, ping = false) => {
 };
 
 process.on("exit", () => {
-    streamMap.forEach((stream) => stream.end);
+    streamMap.forEach((stream) => stream.end());
+    streamMap.clear();
 });
 
 export default {

@@ -1,5 +1,5 @@
 import logger from "../src/logger";
-import colors from "colors";
+import colors from "chalk";
 const text = "Hello";
 
 // Remove the [date time] from the logs
