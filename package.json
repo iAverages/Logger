@@ -17,11 +17,12 @@
         "dist/"
     ],
     "dependencies": {
-        "axios": "^0.21.1",
+        "axios": "^0.27.2",
         "chalk": "^4.1.2",
         "lokipush": "^1.0.2"
     },
     "devDependencies": {
+        "@types/jest": "^27.5.0",
         "@types/node": "^17.0.8",
         "jest": "^28.0.1",
         "prettier": "^2.3.2",
