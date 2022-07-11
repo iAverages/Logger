@@ -23,3 +23,4 @@ logger.setLokiSettings({
 });
 logger.info("Push messages to loki!");
 ```
+
