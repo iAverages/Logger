@@ -17,7 +17,7 @@
         "dist/"
     ],
     "dependencies": {
-        "axios": "^0.27.2",
+        "axios": "^1.1.2",
         "chalk": "^4.1.2",
         "lokipush": "^1.1.0"
     },
